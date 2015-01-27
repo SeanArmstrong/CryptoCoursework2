@@ -1,0 +1,27 @@
+package Exercise2;
+
+import java.math.BigInteger;
+
+public class TimeCompare {
+	public static void time(){
+		/*
+		 * Compare how much time it takes to compute the step related to integer a with the BigInteger
+			library method as well as the method we introduced in Number Theory II with Fermat’s Theorem.
+			Write a concise report on your findings.
+		 */
+		
+		// x^-1 = x^N-2 (mod N)
+		BigInteger N = new BigInteger("64380800680355443923012985496149269915138610753401343291807343952413826484237063006136971539473" +
+				"9134090922937332590384720397133335969549256322620979036686633213903952966175107096769180017646161851573147596390153");
+		BigInteger a = new BigInteger("34325464564574564564768795534569998743457687643234566579654234676796634378768434237897634345765879087764242354365767869780876543424");
+		
+		BigInteger aneg1;
+		// Fermat calcualte inverse of a
+		
+		aneg1 = a.modPow(N.subtract(BigInteger.valueOf(2)), N);
+		
+		
+		
+		
+	}
+}

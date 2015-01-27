@@ -1,0 +1,11 @@
+package Exercise2;
+
+public class TimeCompare {
+	public static void time(){
+		/*
+		 * Compare how much time it takes to compute the step related to integer a with the BigInteger
+			library method as well as the method we introduced in Number Theory II with Fermat’s Theorem.
+			Write a concise report on your findings.
+		 */
+	}
+}

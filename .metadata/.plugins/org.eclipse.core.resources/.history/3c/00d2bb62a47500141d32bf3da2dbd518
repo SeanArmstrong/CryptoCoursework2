@@ -1,0 +1,53 @@
+package Exercise2;
+
+import java.math.BigInteger;
+
+import Exercise1.ExtendedEuclidianAlgorithm;
+import Helpers.StaticHelpers;
+
+public class LinearEquations {
+
+	public static void main(String[] args) {
+		TimeCompare.time();
+		
+		// Question 2a
+		BigInteger N = new BigInteger("64380800680355443923012985496149269915138610753401343291807343952413826484237063006136971539473" +
+										"9134090922937332590384720397133335969549256322620979036686633213903952966175107096769180017646161851573147596390153");
+		BigInteger a = new BigInteger("34325464564574564564768795534569998743457687643234566579654234676796634378768434237897634345765879087764242354365767869780876543424");
+		BigInteger b = new BigInteger("45292384209127917243621242398573220935835723464332452353464376432246757234546765745246457656354765878442547568543334677652352657235");
+		
+		//BigInteger N = new BigInteger("342487235325934582350235837853456029394235268328294285895982432387582570234238487625923289526382379523573265963293293839298595072093573204293092705623485273893582930285732889238492377364284728834632342522323422");
+		//BigInteger a = new BigInteger("34325464564574564564768795534569998743457687643234566579654234676796634378768434237897634345765879087764242354365767869780876543424");
+		//BigInteger b = new BigInteger("24243252873562935279236582385723952735639239823957923562835832582635283562852252525256882909285959238420940257295265329820035324646");
+		
+		BigInteger inverse = coprime(a, N);
+		if(inverse != null){
+			String stringToFile = "Inverse: " + inverse.toString() + "\n";
+			System.out.println("Inverse: " + inverse);
+			
+			// x = -b * a^-1
+			BigInteger result = (b.negate().multiply(inverse)).mod(N);
+			System.out.println("x = " + result);
+			stringToFile = stringToFile + "x = " + result + "\n";
+			
+			StaticHelpers.writeStringToFile(stringToFile, "Results/LatestLinearEquations.txt");
+			
+			// a * x + b = 0
+			System.out.println((a.multiply(result).add(b)).mod(N));
+		}else{
+			StaticHelpers.writeStringToFile("NULL", "Results/LatestLinearEquations.txt");
+		}
+	}
+	
+	public static BigInteger coprime(BigInteger a, BigInteger N){
+		BigInteger[] arr = ExtendedEuclidianAlgorithm.algorithm(N, a);
+		if (arr[0].compareTo(BigInteger.valueOf(1)) == 0){
+			BigInteger t = arr[2];
+			if(t.compareTo(BigInteger.valueOf(0)) == -1){
+				t = t.add(N);
+			}
+			return t;
+		}
+		return null;
+	}
+}

@@ -1,0 +1,70 @@
+package Exercise3;
+
+import java.math.BigInteger;
+
+import Exercise1.ExtendedEuclidianAlgorithm;
+import Helpers.StaticHelpers;
+
+public class DiffieHellman {
+	
+	public static void main(String[] args) {
+		BigInteger generator;
+		BigInteger modulus;
+		
+		// Get random modulus and generator in the range (2 to modulus-1)
+		modulus = StaticHelpers.getRandomNumberOfBitLength(1024);
+		generator = StaticHelpers.getRandomNumberInRange(BigInteger.valueOf(2), modulus.subtract(BigInteger.valueOf(1)));
+				
+		System.out.println("Modulus: " + modulus);
+		System.out.println("Generator: " + generator);
+		System.out.println("Diff: " + modulus.subtract(generator) + "\n");
+		
+		// Setup users and attackers
+		User alice1 = new User();
+		User bob1 = new User();
+		Attacker eve = new Attacker();
+		
+		alice1.setFriend(bob1);
+		bob1.setFriend(alice1);
+		
+		System.out.println("Attack");
+		alice1.initiateKeySetupAttack(eve, modulus, generator);
+		
+		String resultsString1 = "secretA = " + alice1.getPrivateKey() + "\n" + 
+							    "secretB = " + bob1.getPrivateKey() + "\n" + 
+							    "SecretE = " + eve.getPrivateKey() + "\n" + 
+						 	    "msg1.modulus = " + modulus + "\n" + 
+							    "msg1.base = " + generator + "\n" + 
+							    "msg1.valueA = " + alice1.getValue() + "\n" + 
+							    "msg1.eveValue = " + eve.getNewValue() + "\n" + 
+							    "msg2.eveValue = " + eve.getNewValue() + "\n" + 
+						 	    "msg2.valueB = " + bob1.getValue() + "\n" + 
+						 	    "KeyA = " + alice1.getFinalSecret() + "\n" +
+						 	    "EveKeyA = " + eve.getFinalSecretA() + "\n" + 
+						  	    "KeyB = " + bob1.getFinalSecret() + "\n" + 
+								"EveKeyB = " + eve.getFinalSecretB();
+		
+		StaticHelpers.writeStringToFile(resultsString1, "Results/exercise3_question4.txt");
+		
+		System.out.println("\nNo Attack");
+		
+		User alice2 = new User();
+		User bob2 = new User();
+		
+		alice2.setFriend(bob2);
+		bob2.setFriend(alice2);
+		
+		alice2.initiateKeySetup(modulus, generator);
+				
+		String resultsString2 = "secretA = " + alice2.getPrivateKey() + "\n" + 
+							   "secretB = " + bob2.getPrivateKey() + "\n" + 
+							   "msg1.modulus = " + modulus + "\n" + 
+							   "msg1.base = " + generator + "\n" + 
+							   "msg1.valueA = " + alice2.getValue() + "\n" + 
+							   "msg2.valueB = " + bob2.getValue() + "\n" + 
+							   "KeyA = " + alice2.getFinalSecret() + "\n" + 
+							   "KeyB = " + bob2.getFinalSecret();
+		
+		StaticHelpers.writeStringToFile(resultsString2, "Results/exercise3_question2.txt");
+	}
+}
